@@ -48,10 +48,11 @@ export default class Container extends React.Component {
     this.startSpinner();
 
     const promiseA = axios.get('http://demo6368739.mockable.io/');
-    const promiseB = axios.get('http://demo6368739.mockable.io/');
+    const promiseB = axios.get('http://demo6368739.mockable.o/');
 
     Promise.all([promiseA, promiseB])
       .then(([personA, personB]) => this.setPeople([personA.data, personB.data]))
+      .catch(this.setError)
       .finally(this.stopSpinner);
   }
 
@@ -63,18 +64,6 @@ export default class Container extends React.Component {
       .then(res => this.setPerson(res.data))
       .catch(this.setError)
       .finally(this.stopSpinner);
-
-    // fetch('http://demo6368739.mockable.io/')
-    //   .then(data => data.json())
-    //   .then(this.setPerson)
-    //   .catch(this.setError)
-    //   .finally(this.stopSpinner);
-
-    // $.ajax({
-    //   url: 'http://demo6368739.mockable.io/',
-    //   success: this.setPerson,
-    //   error: err => this.setError({ message: err.statusText }),
-    // }).done(this.stopSpinner);
   }
 
   fakeFetchPerson = () => {
@@ -87,7 +76,9 @@ export default class Container extends React.Component {
   }
 
   setPeople = people => {
-    this.setState(st => ({ people: st.people.concat(people) }));
+    this.setState(
+      st => ({ people: st.people.concat(people) }),
+    );
   }
 
   setPerson = person => {
