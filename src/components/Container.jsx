@@ -163,10 +163,11 @@ export default class Container extends React.Component {
           }
           <button onClick={this.fetchPerson}>fetch person</button>
         </StyledCrud>
+
         <StyledCrud>
           {
             this.state.people.map(
-              person => <div key={person.id}>{person.name} is {person.age}</div>
+              person => <div key={person.id}>{person.name} is {person.age}</div>,
             )
           }
           <button onClick={this.fetchTwoPeople}>fetch 2 people</button>
