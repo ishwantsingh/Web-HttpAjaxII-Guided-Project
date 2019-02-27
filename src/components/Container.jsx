@@ -43,7 +43,7 @@ export default class Container extends React.Component {
     this.startSpinner();
     this.resetError();
 
-    doFakeAjax('personURL')
+    doFakeAjax(personURL)
       .then(this.setPerson)
       .catch(this.setError);
   }
