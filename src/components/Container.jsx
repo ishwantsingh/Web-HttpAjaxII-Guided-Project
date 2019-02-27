@@ -15,10 +15,14 @@ const StyledContainer = styled.div`
   }
 `;
 
+const randomBool = () => (
+  !(Math.floor(Math.random() * 2))
+);
+
 const doFakeAjax = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if ((Math.floor(Math.random() * 2)) % 2 === 0) {
+      if (randomBool()) {
         resolve({ id: '1', name: 'Samar', age: 25 });
       } else {
         reject({ message: 'No joy.' });
@@ -40,32 +44,37 @@ export default class Container extends React.Component {
   }
 
   fetchTwoPeople = () => {
-    this.promiseA = axios.get('http://demo6368739.mockable.io/');
-    this.promiseB = axios.get('http://demo6368739.mockable.io/');
+    this.resetError();
+    this.startSpinner();
 
-    Promise.all([this.promiseA, this.promiseB])
-      .then(([personA, personB]) => this.setPeople([personA.data, personB.data]));
+    const promiseA = axios.get('http://demo6368739.mockable.io/');
+    const promiseB = axios.get('http://demo6368739.mockable.io/');
+
+    Promise.all([promiseA, promiseB])
+      .then(([personA, personB]) => this.setPeople([personA.data, personB.data]))
+      .finally(this.stopSpinner);
   }
 
   fetchPerson = () => {
     this.resetError();
     this.startSpinner();
+
+    axios.get('http://demo6368739.mockable.io/')
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
+
     // fetch('http://demo6368739.mockable.io/')
     //   .then(data => data.json())
     //   .then(this.setPerson)
     //   .catch(this.setError)
     //   .finally(this.stopSpinner);
 
-    // axios.get('http://demo6368739.mockable.io/')
-    //   .then(res => this.setPerson(res.data))
-    //   .catch(this.setError)
-    //   .finally(this.stopSpinner);
-
-    $.ajax({
-      url: 'http://demo6368739.mockable.io/',
-      success: this.setPerson,
-      error: err => this.setError({ message: err.statusText }),
-    }).done(this.stopSpinner);
+    // $.ajax({
+    //   url: 'http://demo6368739.mockable.io/',
+    //   success: this.setPerson,
+    //   error: err => this.setError({ message: err.statusText }),
+    // }).done(this.stopSpinner);
   }
 
   fakeFetchPerson = () => {
@@ -87,7 +96,6 @@ export default class Container extends React.Component {
   }
 
   setError = error => {
-    // debugger
     // this.stopSpinner();
     this.setState({ error });
   }
