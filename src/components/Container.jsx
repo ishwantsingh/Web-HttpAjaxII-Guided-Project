@@ -45,57 +45,7 @@ export default class Container extends React.Component {
 
     doFakeAjax('personURL')
       .then(this.setPerson)
-      .catch(this.setError)
-      .finally(this.stopSpinner);
-  }
-
-  fetchTwoPeople = () => {
-    this.resetError();
-    this.startSpinner();
-
-    const promiseA = axios.get(personURL);
-    const promiseB = axios.get(personURL);
-
-    Promise.all([promiseA, promiseB])
-      .then(([personA, personB]) => this.setPeople([personA.data, personB.data]))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
-  }
-
-  postNewPerson = () => {
-    this.resetError();
-    this.startSpinner();
-
-    const name = this.inputNameRef.current.value;
-    const age = this.inputAgeRef.current.value;
-
-    axios.post(personURL, { name, age })
-      .then(res => this.setPerson(res.data))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
-  }
-
-  putPerson = () => {
-    this.resetError();
-    this.startSpinner();
-
-    const name = this.inputNameEditRef.current.value;
-    const age = this.inputAgeEditRef.current.value;
-
-    axios.put(personURL + this.state.person.id, { name, age })
-      .then(res => this.setPerson(res.data))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
-  }
-
-  deletePerson = id => {
-    this.resetError();
-    this.startSpinner();
-
-    axios.delete(personURL + id)
-      .then(res => console.log(res.data.message))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
+      .catch(this.setError);
   }
 
   fetchPerson = () => {
@@ -108,19 +58,35 @@ export default class Container extends React.Component {
       .finally(this.stopSpinner);
   }
 
+  // CRUD OPERATIONS
+  fetchTwoPeople = () => {
+
+  }
+
+  postNewPerson = () => {
+
+  }
+
+  putPerson = () => {
+
+  }
+
+  deletePerson = id => {
+
+  }
+
+  // STATE MANAGEMENT
   setPeople = people => {
-    this.setState(
-      st => ({ people: st.people.concat(people) }),
-    );
+
   }
 
   setPerson = person => {
-    // this.stopSpinner();
+    this.stopSpinner();
     this.setState({ person });
   }
 
   setError = error => {
-    // this.stopSpinner();
+    this.stopSpinner();
     this.setState({ error });
   }
 
