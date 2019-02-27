@@ -55,8 +55,7 @@ export default class Container extends React.Component {
 
     axios.get(personURL)
       .then(res => this.setPerson(res.data))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
+      .catch(this.setError);
   }
 
   fetchTwoPeople = () => {
