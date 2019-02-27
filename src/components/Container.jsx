@@ -1,19 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import $ from 'jquery';
 import axios from 'axios';
+import { StyledContainer, StyledCrud } from './styled/styled';
 
 
-const StyledContainer = styled.div`
-  padding: 20px;
-  height: 100%;
-
-  nav {
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-`;
+const personURL = 'http://gabe.mockable.io/';
 
 const randomBool = () => (
   !(Math.floor(Math.random() * 2))
@@ -39,19 +29,71 @@ export default class Container extends React.Component {
     people: [],
   }
 
-  componentDidMount() {
-    this.fetchPerson();
+  inputNameRef = React.createRef();
+
+  inputAgeRef = React.createRef();
+
+  inputNameEditRef = React.createRef();
+
+  inputAgeEditRef = React.createRef();
+
+  inputIdRef = React.createRef();
+
+  fakeFetchPerson = () => {
+    this.startSpinner();
+    this.resetError();
+
+    doFakeAjax('personURL')
+      .then(this.setPerson)
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   fetchTwoPeople = () => {
     this.resetError();
     this.startSpinner();
 
-    const promiseA = axios.get('http://demo6368739.mockable.io/');
-    const promiseB = axios.get('http://demo6368739.mockable.o/');
+    const promiseA = axios.get(personURL);
+    const promiseB = axios.get(personURL);
 
     Promise.all([promiseA, promiseB])
       .then(([personA, personB]) => this.setPeople([personA.data, personB.data]))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
+  }
+
+  postNewPerson = () => {
+    this.resetError();
+    this.startSpinner();
+
+    const name = this.inputNameRef.current.value;
+    const age = this.inputAgeRef.current.value;
+
+    axios.post(personURL, { name, age })
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
+  }
+
+  putPerson = () => {
+    this.resetError();
+    this.startSpinner();
+
+    const name = this.inputNameEditRef.current.value;
+    const age = this.inputAgeEditRef.current.value;
+
+    axios.put(personURL + this.state.person.id, { name, age })
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
+  }
+
+  deletePerson = id => {
+    this.resetError();
+    this.startSpinner();
+
+    axios.delete(personURL + id)
+      .then(res => console.log(res.data.message))
       .catch(this.setError)
       .finally(this.stopSpinner);
   }
@@ -60,17 +102,8 @@ export default class Container extends React.Component {
     this.resetError();
     this.startSpinner();
 
-    axios.get('http://demo6368739.mockable.io/')
+    axios.get(personURL)
       .then(res => this.setPerson(res.data))
-      .catch(this.setError)
-      .finally(this.stopSpinner);
-  }
-
-  fakeFetchPerson = () => {
-    this.startSpinner();
-    this.resetError();
-    doFakeAjax('http://demo6368739.mockable.io/')
-      .then(this.setPerson)
       .catch(this.setError)
       .finally(this.stopSpinner);
   }
@@ -112,23 +145,51 @@ export default class Container extends React.Component {
       return (
         <StyledContainer>
           <div>Argh! This failed rather miserably. {this.state.error.message}</div>
-          <button onClick={this.fetchPerson}>fetch again</button>
+          <button onClick={this.fetchPerson}>fetch person</button>
         </StyledContainer>
       );
     }
 
     return (
       <StyledContainer>
-        {
-          this.state.person && (
-            <div>
-              <div>Name: {this.state.person.name}</div>
-              <div>Age: {this.state.person.age}</div>
-              <button onClick={this.fetchPerson}>fetch person</button>
-            </div>
-          )
-        }
-        <button onClick={this.fetchTwoPeople}>fetch 2 people</button>
+        <StyledCrud>
+          {
+            this.state.person && (
+              <>
+                <div>Name: {this.state.person.name}</div>
+                <div>Age: {this.state.person.age}</div>
+              </>
+            )
+          }
+          <button onClick={this.fetchPerson}>fetch person</button>
+        </StyledCrud>
+        <StyledCrud>
+          {
+            this.state.people.map(person => <div>{person.name} is {person.age}</div>)
+          }
+          <button onClick={this.fetchTwoPeople}>fetch 2 people</button>
+        </StyledCrud>
+
+        <StyledCrud>
+          name: <input type='text' ref={this.inputNameRef} /><br />
+          age: <input type='text' ref={this.inputAgeRef} /><br />
+          <button onClick={this.postNewPerson}>submit new person</button>
+        </StyledCrud>
+
+        <StyledCrud>
+          name: <input type='text' ref={this.inputNameEditRef} /><br />
+          age: <input type='text' ref={this.inputAgeEditRef} /><br />
+          <button onClick={this.putPerson}>edit person</button>
+        </StyledCrud>
+
+        <StyledCrud>
+          id: <input type='text' ref={this.inputIdRef} /><br />
+          <button
+            onClick={() => this.deletePerson(this.inputIdRef.current.value)}
+          >
+            delete person
+          </button>
+        </StyledCrud>
       </StyledContainer>
     );
   }
