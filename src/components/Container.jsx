@@ -48,6 +48,7 @@ export default class Container extends React.Component {
       .catch(this.setError);
   }
 
+  // CRUD OPERATIONS
   fetchPerson = () => {
     this.resetError();
     this.startSpinner();
@@ -58,7 +59,6 @@ export default class Container extends React.Component {
       .finally(this.stopSpinner);
   }
 
-  // CRUD OPERATIONS
   fetchTwoPeople = () => {
 
   }
