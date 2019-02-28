@@ -3,14 +3,14 @@ import axios from 'axios';
 import { StyledContainer, StyledCrud } from './styled/styled';
 
 
-const personURL = 'http://gabe.mockable.io/';
+const personURL = 'http://gabe.mockable.io/person/';
 
 const randomBool = () => (
   !(Math.floor(Math.random() * 2))
 );
 
-const doFakeAjax = () => {
-  return new Promise((resolve, reject) => {
+const doFakeAjax = () => { // BROKEN!!! WHY??
+  new Promise((resolve, reject) => {
     setTimeout(() => {
       if (randomBool()) {
         resolve({ id: '1', name: 'Samar', age: 25 });
@@ -49,7 +49,7 @@ export default class Container extends React.Component {
   }
 
   // CRUD OPERATIONS
-  fetchPerson = () => {
+  fetchPerson = () => { // BROKEN!!! WHY??
     this.resetError();
     this.startSpinner();
 
@@ -118,6 +118,7 @@ export default class Container extends React.Component {
     return (
       <StyledContainer>
         <StyledCrud>
+          <h5>[GET] a random person</h5>
           {
             this.state.person && (
               <>
@@ -130,6 +131,7 @@ export default class Container extends React.Component {
         </StyledCrud>
 
         <StyledCrud>
+          <h5>[GET * 2] random people</h5>
           {
             this.state.people.map(
               person => <div key={person.id}>{person.name} is {person.age}</div>,
@@ -139,18 +141,21 @@ export default class Container extends React.Component {
         </StyledCrud>
 
         <StyledCrud>
+          <h5>[POST] a new person</h5>
           name: <input type='text' ref={this.inputNameRef} /><br />
           age: <input type='text' ref={this.inputAgeRef} /><br />
           <button onClick={this.postNewPerson}>submit new person</button>
         </StyledCrud>
 
         <StyledCrud>
+          <h5>[PUT] existing person by id</h5>
           name: <input type='text' ref={this.inputNameEditRef} /><br />
           age: <input type='text' ref={this.inputAgeEditRef} /><br />
           <button onClick={this.putPerson}>edit person</button>
         </StyledCrud>
 
         <StyledCrud>
+          <h5>[DELETE] existing person by id</h5>
           id: <input type='text' ref={this.inputIdRef} /><br />
           <button
             onClick={() => this.deletePerson(this.inputIdRef.current.value)}

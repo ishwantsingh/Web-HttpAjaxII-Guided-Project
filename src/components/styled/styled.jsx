@@ -12,7 +12,7 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledCrud = styled.div`
-  padding: 15px;
+  padding: 0 15px 15px 15px;
   margin: 5px;
   border: 2px solid black;
   border-radius: 10px;
