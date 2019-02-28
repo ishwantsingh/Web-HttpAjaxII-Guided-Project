@@ -3,7 +3,7 @@ import axios from 'axios';
 import { StyledContainer, StyledCrud } from './styled/styled';
 
 
-const personURL = 'http://gabe.mockable.io/person/';
+const personURL = 'http://gabe.mockable.io/person';
 
 const randomBool = () => (
   !(Math.floor(Math.random() * 2))
@@ -45,7 +45,8 @@ export default class Container extends React.Component {
 
   //   doFakeAjax(personURL)
   //     .then(this.setPerson)
-  //     .catch(this.setError);
+  //     .catch(this.setError)
+  //     .finally(this.stopSpinner);
   // }
 
   // CRUD OPERATIONS
@@ -54,8 +55,9 @@ export default class Container extends React.Component {
     this.startSpinner();
 
     axios.get(personURL)
-      .then(this.setPerson)
-      .catch(this.setError);
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   fetchTwoPeople = () => {
@@ -80,12 +82,10 @@ export default class Container extends React.Component {
   }
 
   setPerson = person => {
-    this.stopSpinner();
     this.setState({ person });
   }
 
   setError = error => {
-    this.stopSpinner();
     this.setState({ error });
   }
 
