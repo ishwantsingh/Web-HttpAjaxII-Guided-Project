@@ -104,7 +104,15 @@ export default class Container extends React.Component {
   }
 
   deletePerson = id => {
+    confirm(`Are you sure you want to delete person with ID: ${id}`);
 
+    this.resetError();
+    this.startSpinner();
+
+    axios.delete(`${personURL}/${id}`)
+      .then(res => alert(res.data.message))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   // STATE MANAGEMENT
