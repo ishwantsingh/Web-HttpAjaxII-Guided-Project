@@ -91,7 +91,16 @@ export default class Container extends React.Component {
   }
 
   putPerson = () => {
+    this.resetError();
+    this.startSpinner();
 
+    const name = this.inputNameEditRef.current.value;
+    const age = this.inputAgeEditRef.current.value;
+
+    axios.put(`${personURL}/${this.state.person.id}`, { name, age })
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   deletePerson = id => {
