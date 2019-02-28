@@ -39,14 +39,14 @@ export default class Container extends React.Component {
 
   inputIdRef = React.createRef();
 
-  fakeFetchPerson = () => {
-    this.startSpinner();
-    this.resetError();
+  // fakeFetchPerson = () => {
+  //   this.startSpinner();
+  //   this.resetError();
 
-    doFakeAjax(personURL)
-      .then(this.setPerson)
-      .catch(this.setError);
-  }
+  //   doFakeAjax(personURL)
+  //     .then(this.setPerson)
+  //     .catch(this.setError);
+  // }
 
   // CRUD OPERATIONS
   fetchPerson = () => { // BROKEN!!! WHY??
