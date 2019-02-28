@@ -61,7 +61,16 @@ export default class Container extends React.Component {
   }
 
   fetchTwoPeople = () => {
+    this.resetError();
+    this.startSpinner();
 
+    const promiseA = axios.get(personURL);
+    const promiseB = axios.get(personURL);
+
+    Promise.all([promiseA, promiseB])
+      .then(([res1, res2]) => this.setPeople([res1.data, res2.data]))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   postNewPerson = () => {
