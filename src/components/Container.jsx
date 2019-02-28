@@ -54,7 +54,7 @@ export default class Container extends React.Component {
     this.startSpinner();
 
     axios.get(personURL)
-      .then(res => this.setPerson(res.data))
+      .then(this.setPerson)
       .catch(this.setError);
   }
 
