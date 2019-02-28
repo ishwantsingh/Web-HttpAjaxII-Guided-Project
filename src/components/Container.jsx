@@ -77,8 +77,12 @@ export default class Container extends React.Component {
   }
 
   // STATE MANAGEMENT
+  // takes array of persons
+  // concatenates the persons to the end of state.people
   setPeople = people => {
-
+    this.setState(st => ({
+      people: st.people.concat(people),
+    }));
   }
 
   setPerson = person => {
