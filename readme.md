@@ -17,7 +17,9 @@ We need `node` & `npm`, as well as packages `live-server` and `eslint` installed
   * Learn `ref`s in `React`.
 
 # Steps
+  * Fix the `fetchPerson` request.
   * Show our `GET` in action in Chrome Devtools Network tab.
+  * Show how to see different details of the request on the Network Tab.
   * Teach `promise.finally()` and clean up `setPerson` and `setError`.
   * Teach `Promise.all()` and use it to fetch two people.
   * Implement `setPeople` so we concatenate the two people to `this.state.people`.
