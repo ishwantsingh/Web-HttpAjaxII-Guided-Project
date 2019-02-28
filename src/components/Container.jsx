@@ -50,7 +50,7 @@ export default class Container extends React.Component {
   // }
 
   // CRUD OPERATIONS
-  fetchPerson = () => { // BROKEN!!! WHY??
+  fetchPerson = () => {
     this.resetError();
     this.startSpinner();
 
@@ -74,7 +74,12 @@ export default class Container extends React.Component {
   }
 
   postNewPerson = () => {
-
+    // similar to fetchPerson
+    // but it uses axios.post
+    // which takes 2 args this time:
+    // url, PAYLOAD { name, age }
+    const name = this.inputNameRef.current.value;
+    const age = this.inputAgeRef.current.value;
   }
 
   putPerson = () => {
