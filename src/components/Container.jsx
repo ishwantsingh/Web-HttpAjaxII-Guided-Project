@@ -80,6 +80,14 @@ export default class Container extends React.Component {
     // url, PAYLOAD { name, age }
     const name = this.inputNameRef.current.value;
     const age = this.inputAgeRef.current.value;
+
+    this.resetError();
+    this.startSpinner();
+
+    axios.post(personURL, { name, age })
+      .then(res => this.setPerson(res.data))
+      .catch(this.setError)
+      .finally(this.stopSpinner);
   }
 
   putPerson = () => {
